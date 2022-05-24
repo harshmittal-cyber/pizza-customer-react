@@ -89,7 +89,7 @@
   
   /* login section */
   .login_button {
-    padding: 8px 24px;
+    padding: 8px 12px;
     margin: 5px;
     font-size: 13px;
     letter-spacing: 0.3px;
@@ -267,7 +267,7 @@
   
   @media screen and (max-width: 608px) {
     .login_button {
-      padding: 6px 18px;
+      padding: 6px 12px;
     }
     .header_container .profile_dropdown {
       width: 130px;
@@ -279,10 +279,16 @@
       letter-spacing: 0.5px;
     }
   }
+
+  @media screen and (max-width: 380px) {
+    .login_button {
+      padding: 6px 8px;
+    }
+  }
   
   @media screen and (max-width: 319px) {
     .login_button {
-      padding: 6px 12px;
+      padding: 6px 6px;
       font-size: 11px;
       letter-spacing: 0.2px;
     }

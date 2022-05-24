@@ -4,7 +4,8 @@ import {
     SEND_OTP_SUCCESS,
     VERIFY_OTP_FAIL,
     VERIFY_OTP_REQUEST,
-    VERIFY_OTP_SUCCESS
+    VERIFY_OTP_SUCCESS,
+    LOGOUT_SUCCESS
 } from '../constants/userConstant';
 
 
@@ -45,6 +46,7 @@ export const userReducer = (state = initialState, action) => {
         case VERIFY_OTP_SUCCESS:
             return {
                 ...state,
+                isAuth: true,
                 loading: false,
                 message: action.payload.message,
                 user: action.payload.user,
@@ -59,6 +61,15 @@ export const userReducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 error: action.payload
+            }
+
+        case LOGOUT_SUCCESS:
+            return {
+                ...state,
+                isAuth: false,
+                message: null,
+                user: null,
+                error: null
             }
 
         default:

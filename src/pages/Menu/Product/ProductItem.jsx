@@ -2,13 +2,22 @@ import React,{useState} from 'react'
 import style from "./Product.module.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/opacity.css";
-import { useSelector } from "react-redux";
-
+import { useSelector,useDispatch } from "react-redux";
+import {addToCart} from '../../../redux/actions/cart'
 
 
 const ProductItem = ({product}) => {
   const [adding, setAdding] = useState(false);
-  const isAuth=true;
+  const {isAuth}=useSelector((state)=>state.userReducer)
+  const dispatch=useDispatch();
+
+  const handleAddItem=(product)=>{
+    const {_id,itemName,price,image,description}=product
+    dispatch(addToCart({_id,itemName,price,image,description})).then((res)=>{
+      console.log('red',res)
+    })
+  }
+
   return (
     <div className={`${style.productStyle} shadow-lg`}>
     <div className="overflow-hidden " data-label={`${product.name}`}>
@@ -41,7 +50,7 @@ const ProductItem = ({product}) => {
           </div>
           <div className={`${style.buttonSection}`}>
             <div className="self_center">
-              {isAuth && adding ? (
+            {adding ? (
                 <button
                   data-label="addtocart"
                   className={`${style.addtocart}`}
@@ -64,7 +73,7 @@ const ProductItem = ({product}) => {
                   data-label="addtocart"
                   className={`${style.addtocart}`}
                   style={{ border: "1.5px solid green" }}
-                  // onClick={() => additemincart(product)}
+                  onClick={() => handleAddItem(product)}
                 >
                   <span
                     style={{
