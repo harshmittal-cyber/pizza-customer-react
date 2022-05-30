@@ -27,7 +27,7 @@ const StepOtp = ({onPrev}) => {
 
         dispatch(verifyotp(item)).then((res)=>{
             if(res.success){
-                // navigate(-1)
+                navigate(-1)
             }
         })
     }

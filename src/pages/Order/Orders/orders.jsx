@@ -1,20 +1,27 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector ,useDispatch} from "react-redux";
 import moment from "moment";
 import style from "./orders.module.css";
 import styles from "../../Cart/Cart/Cart.module.css";
-
+import { getOrder } from "../../../redux/actions/order";
 
 const Orders = () => {
+  const {order}=useSelector((state)=>state.orderReducer)
   const {isAuth}=useSelector((state)=>state.userReducer);
-  const orders=[]
+  const dispatch=useDispatch()
+
+  useEffect(()=>{
+    if(isAuth){
+      dispatch(getOrder())
+    }
+  },[])
 
   return (
     <>
       <div>
         <>
-          {isAuth && orders.length > 0 ? (
+          {isAuth && order.length > 0 ? (
             <>
               <div>
                 <div className={`${style.order}`}>
@@ -23,7 +30,7 @@ const Orders = () => {
                       <div className={`${style.order_heading}`}>All Orders</div>
                     </div>
                     <div className={`${style.order_container}`}>
-                      {orders.map((order, index) => {
+                      {order.map((order, index) => {
                         return (
                           <div
                             className={`${style.order_item} ${style.order_width}`}
@@ -71,7 +78,7 @@ const Orders = () => {
                                   </div>
                                   &nbsp;
                                   <div className={`${style.item_desc}`}>
-                                    {order.order_id}
+                                    {order.orderId}
                                   </div>
                                 </div>
                               </div>
@@ -80,7 +87,7 @@ const Orders = () => {
                                   className={`${style.order_details_button}`}
                                 >
                                   <Link
-                                    to={`/order_details?order_id=${order.order_id}`}
+                                    to={`/order_details?order_id=${order.orderId}`}
                                   >
                                     <button className={`${style.order_btn}`}>
                                       <span>view detail</span>

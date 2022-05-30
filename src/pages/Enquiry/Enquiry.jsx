@@ -92,7 +92,7 @@ const Enquiry = () => {
                 Feel free to write to us at
               </p>
               <p className={`${style.section_text_bold}`}>
-                mittalharsh4321@gmail.com
+                hungrypiz83@gmail.com
               </p>
             </section>
           </div>

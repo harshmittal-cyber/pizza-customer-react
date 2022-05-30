@@ -71,6 +71,7 @@ export const addToCart = (product, newqty = 1) => async (dispatch) => {
             const cartItems = [{ productId: product._id, quantity: qty }]
 
             const res = await apih.post('/api/cart/addtocart', { cartItems });
+            console.log('res', res.data)
             if (res.status === 200) {
                 dispatch(getCartItems())
             }
