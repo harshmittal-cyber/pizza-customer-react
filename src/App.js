@@ -34,7 +34,7 @@ function App() {
           <Route exact path='/cart' element={<Cart />} />
           {/* <Route element={PrivateRoute}> */}
           <Route exact path='checkout' element={<Checkout />} />
-          {/* <Route exact path='/order_details' element={<OrderDetails />} /> */}
+          <Route exact path='/order_details' element={<OrderDetails />} />
           {/* </Route> */}
         </Route>
 

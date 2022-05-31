@@ -88,6 +88,7 @@ const Orders = () => {
                                 >
                                   <Link
                                     to={`/order_details?order_id=${order.orderId}`}
+                                    state={{orderId:order.orderId}}
                                   >
                                     <button className={`${style.order_btn}`}>
                                       <span>view detail</span>

@@ -13,15 +13,11 @@ const OrderDetails = () => {
 
     useEffect(()=>{
         const search=param.search.split('=')[1]
-        const filter=order.filter(((item)=>item.orderId===search));
-
-        if(Object.keys(filter[0]).length>0){
-            setLoading(false)
+        const filter=order.filter((item)=>item.orderId===search)
+        if(filter.length>0){
             setOrder(filter[0])
-
+            setLoading(false)
         }
-        // console.log(filter[0])
-
     },[])  
 
     function classNames(...classes) {
@@ -265,15 +261,14 @@ const OrderDetails = () => {
                         </dt>
                         <dd className="mt-3 text-gray-500">
                             <span className="block">
-                            {/* {Order.address.address.firstname}&nbsp; */}
-                            {Order.address.address.name}
+                            {Order.addressId.address.name}
                             </span>
                             <span className="block">
-                            {Order.address.address.pinCode}{" "}
-                            {Order.address.address.city}
+                            {Order.addressId.address.pinCode}{" "}
+                            {Order.addressId.address.city}
                             </span>
                             <span className="block">
-                            {Order.address.address.state}
+                            {Order.addressId.address.state}
                             </span>
                         </dd>
                         </div>
@@ -321,7 +316,7 @@ const OrderDetails = () => {
                         <div className="pb-4 flex items-center justify-between">
                         <dt className="text-gray-600">Subtotal</dt>
                         <dd className="font-medium text-gray-900">
-                            {/* ₹{order.totalAmount} */}
+                            ₹{Order.orderAmount}
                         </dd>
                         </div>
                         <div className="py-4 flex items-center justify-between">
@@ -332,7 +327,7 @@ const OrderDetails = () => {
                         <div className="pt-4 flex items-center justify-between">
                         <dt className="font-medium text-gray-900">Order total</dt>
                         <dd className="font-medium text-gray-700">
-                            {/* ₹{order.totalAmount} */}
+                            ₹{Order.orderAmount}
                         </dd>
                         </div>
                     </dl>
@@ -340,7 +335,7 @@ const OrderDetails = () => {
                 </section>
                 </main>
             </div>
-            </>
+        </>
     }
         </>
     )

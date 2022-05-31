@@ -8,6 +8,7 @@ import { sendotp } from "../../../redux/actions/user";
 const StepPhone = ({onNext}) => {
   const {loading}=useSelector((state)=>state.userReducer)
   const [phone, setPhone] = useState("");
+  const [error,setError]=useState(null)
   const dispatch=useDispatch();
 
   const keypress=(e)=> {
@@ -21,8 +22,17 @@ const StepPhone = ({onNext}) => {
     dispatch(sendotp(phone)).then((res)=>{
         if(res.success){
             onNext();
+        }else{
+          displayError(res.message)
         }
     })
+  }
+
+  const displayError=(message)=>{
+    setError(message);
+    setTimeout(()=>{
+      setError(null)
+    },3000)
   }
 
   return (
@@ -46,6 +56,7 @@ const StepPhone = ({onNext}) => {
           />
         </div>
       </div>
+      {error !==null && <span style={{color:'#fc283f'}}>{error}</span>}
       {phone.length < 10 ? (
         <>
           <input
