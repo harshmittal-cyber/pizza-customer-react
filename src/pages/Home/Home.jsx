@@ -2,7 +2,7 @@ import React from 'react'
 import style from "./Home.module.css";
 import { Link } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-
+import Footer from '../../components/Footer/Footer';
 const Images = [
     {
       path: `/images/Deliveryboy.svg`,
@@ -100,6 +100,7 @@ const Home = () => {
             </div>
             </div>
         </div>
+        <Footer/>
     </>
   )
 }

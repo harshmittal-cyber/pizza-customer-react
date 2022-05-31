@@ -1,6 +1,6 @@
 import React,{useState} from "react";
 import { useSelector } from "react-redux";
-import { Redirect, Link as RedirectLink } from "react-router-dom";
+import { Link as RedirectLink,Navigate } from "react-router-dom";
 import Address from "../CheckoutSteps/Address/Address";
 import Payment from "../CheckoutSteps/Payment/Payment";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -60,58 +60,62 @@ const Checkout = () => {
     setActiveStep(activeStep - 1);
   };
 
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-        <Paper
-          variant="outlined"
-          sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
-        >
-          <Typography component="h1" variant="h4" align="center">
-            {activeStep === steps.length ? "Order Successful" : "Checkout"}
-          </Typography>
-          <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-          <React.Fragment>
-            {activeStep === steps.length ? (
-              <React.Fragment>
-                <Typography variant="h5" gutterBottom>
-                  Thank you for your order.
-                </Typography>
-                <Typography variant="subtitle1">
-                  Your Order ID is #{'OD'}. We have emailed your order
-                  confirmation, and will send you an update when your order will
-                  Out For Delivery.
-                </Typography>
-                <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                  <RedirectLink to="/menu">
-                    <Button
-                      variant="contained"
-                      sx={{ mt: 3, ml: 1 }}
-                      className="root_button"
-                    >
-                      Back to Menu
-                    </Button>
-                  </RedirectLink>
-                </Box>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                {getStepContent(activeStep, handleNext, handleBack)}
-              </React.Fragment>
-            )}
-          </React.Fragment>
-        </Paper>
-        <Copyright />
-      </Container>
-    </ThemeProvider>
-  )
+  if(isAuth===false){
+    return <Navigate to="/login" />
+  }else{
+    return (
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+          <Paper
+            variant="outlined"
+            sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
+          >
+            <Typography component="h1" variant="h4" align="center">
+              {activeStep === steps.length ? "Order Successful" : "Checkout"}
+            </Typography>
+            <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+            <React.Fragment>
+              {activeStep === steps.length ? (
+                <React.Fragment>
+                  <Typography variant="h5" gutterBottom>
+                    Thank you for your order.
+                  </Typography>
+                  <Typography variant="subtitle1">
+                    Your Order is Placed. We have emailed your order
+                    confirmation, and will send you an update when your order will
+                    Out For Delivery.
+                  </Typography>
+                  <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                    <RedirectLink to="/menu">
+                      <Button
+                        variant="contained"
+                        sx={{ mt: 3, ml: 1 }}
+                        className="root_button"
+                      >
+                        Back to Menu
+                      </Button>
+                    </RedirectLink>
+                  </Box>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  {getStepContent(activeStep, handleNext, handleBack)}
+                </React.Fragment>
+              )}
+            </React.Fragment>
+          </Paper>
+          <Copyright />
+        </Container>
+      </ThemeProvider>
+    )
+  }
 }
 
 export default Checkout

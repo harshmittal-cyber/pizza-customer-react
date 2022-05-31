@@ -1,9 +1,13 @@
 import React from "react";
 import style from "./Button.module.css";
-const Button = ({ text, onClick }) => {
+const Button = ({ text, onClick,loading  }) => {
   return (
     <button onClick={onClick} className={`${style.button} root_button`}>
-      <span>{text}</span>
+      <span>{loading!==undefined
+                  ?loading
+                  ?"Loading...":text:''
+              }
+        </span>
     </button>
   );
 };

@@ -10,6 +10,8 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import axios from "axios";
 import {placeOrder} from '../../../redux/actions/order'
+import { getCartItems } from '../../../redux/actions/cart';
+import {API} from '../../../Backend';
 
 const Payment = ({handleNext,handleBack}) => {
     const {user}=useSelector((state)=>state.userReducer);
@@ -57,10 +59,10 @@ const Payment = ({handleNext,handleBack}) => {
 
         dispatch(placeOrder(payload)).then((res)=>{
             if(res.success){
+                dispatch(getCartItems())
                 handleNext()
             }
         })
-
     }
     
     function loadScript(src) {
@@ -77,7 +79,61 @@ const Payment = ({handleNext,handleBack}) => {
         });
     }
 
-    const handlePayment=async ()=>{}
+    const handlePayment=async ()=>{
+        const res = await loadScript(
+            "https://checkout.razorpay.com/v1/checkout.js"
+          );
+      
+          if (!res) {
+            return;
+          }
+          const token=localStorage.getItem('token')
+          const config={
+              headers:{
+                  'Content-type':'application/json',
+                  Accept: "application/json",
+                  Authorization:`Bearer ${token}`
+              }
+          }
+
+          let total=0;
+          Object.keys(cartItems).map((key,index)=>{
+                total+=cartItems[key].price*cartItems[key].qty
+          })
+      
+          const {data}=await axios.post(`${API}/api/payment/createpayment`,{amount:total},config)
+          if(!data){
+              return
+          }
+          console.log('paymentdata',data)
+
+          const options={
+              key:process.env.REACT_APP_RAZORPAY_KEY_ID,
+              currency:data.currency,
+              amount:data.amount.toString(),
+              order_id:data.id,
+              name:'HUNGRY',
+              image:`/images/favicon.svg`,
+              description: "Payment Receipt",
+              handler:async function(response){
+                const {razorpay_payment_id,razorpay_order_id,razorpay_signature}=response
+
+                if(razorpay_order_id!==undefined && razorpay_payment_id!==undefined && razorpay_signature!==undefined){
+                    setFailure("")
+                    confirmcardorder()
+                }
+              },
+              prefill:{
+                  phone_number:user.phone
+              }
+          }
+
+          const paymentObject = new window.Razorpay(options);
+          paymentObject.on("payment.failed", function (response) {
+            setFailure(response.error.description);
+          });
+          paymentObject.open();
+    }
 
     return (
         <>
@@ -150,7 +206,7 @@ const Payment = ({handleNext,handleBack}) => {
                 className="root_button"
                 onClick={handlePayment}
                 >
-                Continue
+                Confirm Order
                 </Button>
             </>
             )}

@@ -4,7 +4,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/opacity.css";
 import { useSelector,useDispatch } from "react-redux";
 import {addToCart} from '../../../redux/actions/cart'
-
+import {API} from '../../../Backend'
 
 const ProductItem = ({product}) => {
   const [adding, setAdding] = useState(false);
@@ -12,9 +12,10 @@ const ProductItem = ({product}) => {
   const dispatch=useDispatch();
 
   const handleAddItem=(product)=>{
+    setAdding(true)
     const {_id,itemName,price,image,description}=product
     dispatch(addToCart({_id,itemName,price,image,description})).then((res)=>{
-      console.log('red',res)
+      setAdding(false)
     })
   }
 
@@ -26,7 +27,7 @@ const ProductItem = ({product}) => {
           <div className={`${style.product_image}`}>
             <div className={`${style.img_cvr}`}>
               <LazyLoadImage
-                src={`http://localhost:4000${product.image}`}
+                src={`${API}${product.image}`}
                 alt={`${product.name}`}
               />
             </div>

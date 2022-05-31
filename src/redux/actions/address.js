@@ -8,12 +8,25 @@ import {
 } from '../constants/addressConstant';
 
 import api from './server';
+import { API } from '../../Backend';
+import axios from 'axios'
 
 export const createAddress = (values) => async (dispatch) => {
     try {
         dispatch({ type: ADD_ADDRESS_REQUEST });
 
-        const { data } = await api.post('/api/address/createaddress', { address: values });
+        const token = localStorage.getItem('token')
+        const apih = axios.create({
+            baseURL: API,
+            headers: {
+                "Content-type": 'application/json',
+                Accept: "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            withCredentials: true
+        })
+
+        const { data } = await apih.post('/api/address/createaddress', { address: values });
 
         dispatch({ type: ADD_ADDRESS_SUCCESS, payload: data.address });
         return data
@@ -27,7 +40,17 @@ export const getAddress = () => async (dispatch) => {
     try {
         dispatch({ type: GET_ADDRESS_REQUEST })
 
-        const { data } = await api.get('/api/address/getaddress');
+        const token = localStorage.getItem('token')
+        const apih = axios.create({
+            baseURL: API,
+            headers: {
+                "Content-type": 'application/json',
+                Accept: "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            withCredentials: true
+        })
+        const { data } = await apih.get('/api/address/getaddress');
 
         dispatch({ type: GET_ADDRESS_SUCCESS, payload: data.address === null ? {} : data.address })
         return data

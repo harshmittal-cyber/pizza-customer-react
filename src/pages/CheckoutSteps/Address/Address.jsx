@@ -11,6 +11,7 @@ import { createAddress, getAddress } from "../../../redux/actions/address";
 
 
 const Address = ({handleNext}) => {
+  const {isAuth}=useSelector((state)=>state.userReducer)
     const {address}=useSelector((state)=>state.addressReducer);
     const length=Object.keys(address).length>0
     const addressArray={
@@ -25,10 +26,18 @@ const Address = ({handleNext}) => {
     const [changed,setChanged]=useState(false)
     const [values,setValues]=useState(addressArray);
     const [check,setCheck]=useState(false);
+    const [error,setError]=useState(null)
     const dispatch=useDispatch();
-    
+
+
     useEffect(()=>{
-      dispatch(getAddress())
+      if(isAuth){
+        dispatch(getAddress()).then((res)=>{
+          if(res.success){
+            setValues(res.address.address)
+          }
+        })
+      }
     },[])
 
     const handleChange=(e)=>{
@@ -41,16 +50,33 @@ const Address = ({handleNext}) => {
       })
     }
 
+    const handleError=()=>{
+      if(values.name.trim().length<1 || values.state.trim().length<1 || values.city.trim().length<1 || values.phoneNumber.trim().length<1 || values.pinCode.trim().length<1 || values.address.trim().length<1){
+        displayError('All Fields Required')
+        return false
+      }
+      return true
+    }
+
     const handleSubmit=()=>{
       if(changed){
-        dispatch(createAddress(values)).then((res)=>{
-          if(res.success){
-            handleNext()
-          }
-        })
+        if(handleError()){
+          dispatch(createAddress(values)).then((res)=>{
+            if(res.success){
+              handleNext()
+            }
+          })
+        }
       }else{
         handleNext()
       }
+    }
+
+    const displayError=(msg)=>{
+      setError(msg)
+      setTimeout(()=>{
+        setError(null)
+      },3000)
     }
 
     const handleAddress=(e)=>{
@@ -58,6 +84,7 @@ const Address = ({handleNext}) => {
     }
 
     return (
+    
         <React.Fragment>
         <Typography variant="h6" gutterBottom>
           Shipping address
@@ -74,9 +101,9 @@ const Address = ({handleNext}) => {
               autoComplete="given-name"
               variant="standard"
               onChange={handleChange}
+              // style={error && { borderBottom: "1px solid red" }}
             />
-          </Grid>
-  
+          </Grid>  
          
           <Grid item xs={12}>
             <TextField
@@ -157,6 +184,7 @@ const Address = ({handleNext}) => {
             />
           </Grid>
         </Grid>
+        {error!==null && <span style={{color:'#fc283f'}}>{error}</span>}
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <Button
               variant="contained"
@@ -170,6 +198,7 @@ const Address = ({handleNext}) => {
             </Button>
         </Box>
       </React.Fragment>
+  
     )
 }
 

@@ -1,6 +1,8 @@
 import React,{useState} from 'react'
 import style from "./Enquiry.module.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import {API} from '../../Backend';
+import axios from 'axios';
 
 const Enquiry = () => {
     const initialarray = {
@@ -14,12 +16,27 @@ const Enquiry = () => {
       };
     
     const [values, setValues] = useState(initialarray);
-    const [error, setError] = useState("");
+    const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
 
     const handleSubmit = (e) => {
-        e.preventDefault();    
+        e.preventDefault(); 
+        axios.post(`${API}/api/user/enquiry`,values).then((res)=>{
+          if(res.status===200){
+            setSuccess(true)
+            setValues(initialarray);
+          }
+        }).catch((err)=>{
+          displayError(err.response.data.message)
+        })
       };
+
+    const displayError=(message)=>{
+      setError(message)
+      setTimeout(()=>{
+        setError(null)
+      },3000)
+    }
 
     return (
         <>
@@ -97,7 +114,6 @@ const Enquiry = () => {
             </section>
           </div>
           <div className={`${style.form}`}>
-            {error ? error : ""}
             {success ? (
               // success body
               <div className={`${style.form_body}`}>
@@ -112,14 +128,15 @@ const Enquiry = () => {
                   <p className={`${style.success_description}`}>
                     Thank you for your interest. We will contact you within 48
                     hours. In case of any other query you can also reach us at{" "}
-                    <a href="mailto:mittalharsh4321@gmail.com">
-                      mittalharsh4321@gmail.com
+                    <a href="mailto:hungrypiz83@gmail.com">
+                      hungrypiz83@gmail.com
                     </a>{" "}
                     with the subject 'Corporate Enquiry'.
                   </p>
                 </div>
               </div>
             ) : (
+
               <div className={`${style.form_body}`}>
                 <p className={`${style.form_title}`}>Contact Us</p>
                 <p className={`${style.form_subtitle}`}>
@@ -211,10 +228,13 @@ const Enquiry = () => {
                       }
                     />
                   </div>
+                {error!==null &&<span style={{color:'#fc283f'}}> {error}</span>}
+
                   <div>
                     <button
                       className={`${style.form_button} root_button`}
                       type="submit"
+                      onClick={handleSubmit}
                     >
                       Submit
                     </button>

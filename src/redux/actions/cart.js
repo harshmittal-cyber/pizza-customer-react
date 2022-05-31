@@ -20,7 +20,9 @@ import axios from 'axios';
 export const getCartItems = () => async (dispatch) => {
     try {
         dispatch({ type: GET_CART_REQUEST })
+
         const token = localStorage.getItem('token')
+
         const apih = axios.create({
             baseURL: API,
             headers: {
@@ -44,6 +46,7 @@ export const getCartItems = () => async (dispatch) => {
 export const addToCart = (product, newqty = 1) => async (dispatch) => {
     try {
         const token = localStorage.getItem('token')
+
         const apih = axios.create({
             baseURL: API,
             headers: {
@@ -137,24 +140,30 @@ export const updateCart = () => async (dispatch) => {
 
 export const removeCartItem = (payload) => async (dispatch) => {
     try {
-        dispatch({ type: REMOVE_CART_ITEM_REQUEST })
+        const { isAuth } = store.getState().userReducer;
 
-        const token = localStorage.getItem('token')
-        const apih = axios.create({
-            baseURL: API,
-            headers: {
-                "Content-type": 'application/json',
-                Accept: "application/json",
-                Authorization: `Bearer ${token}`
-            },
-            withCredentials: true
-        })
+        if (isAuth) {
+            dispatch({ type: REMOVE_CART_ITEM_REQUEST })
 
-        const res = await apih.post(`/api/cart/removeitem`, { payload })
+            const token = localStorage.getItem('token')
+            const apih = axios.create({
+                baseURL: API,
+                headers: {
+                    "Content-type": 'application/json',
+                    Accept: "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                withCredentials: true
+            })
 
-        if (res.status === 200) {
-            dispatch({ type: REMOVE_CART_ITEM_SUCCESS });
-            dispatch(getCartItems())
+            const res = await apih.post(`/api/cart/removeitem`, { payload })
+
+            if (res.status === 200) {
+                dispatch({ type: REMOVE_CART_ITEM_SUCCESS });
+                dispatch(getCartItems())
+            }
+        } else {
+
         }
     } catch (err) {
         dispatch({ type: REMOVE_CART_ITEM_FAIL, payload: err.response.data.message })

@@ -1,17 +1,19 @@
 import React,{useState,useEffect} from 'react'
 import Button from "../../../components/Button/Button";
 import Card from "../../../components/Card/Card";
-import { verifyotp } from '../../../redux/actions/user';
+import { verifyotp ,sendotp} from '../../../redux/actions/user';
 import {useDispatch,useSelector} from 'react-redux';
 import style from "./StepOtp.module.css";
 import { useNavigate } from 'react-router-dom';
 
 const StepOtp = ({onPrev}) => {
+    const {loading}=useSelector((state)=>state.userReducer)
     const [otp, setotp] = useState(new Array(6).fill(""));
     const {phone,hash}=useSelector((state)=>state.userReducer.otp);
     const [phoneno,setPhoneNo]=useState(phone);
     const [counter, setCounter] = useState(60);
-    const [error, setError] = useState("");
+    const [displayError,setDisplayError]=useState(false);
+    const [error, setError] = useState();
     const dispatch=useDispatch();
     const navigate=useNavigate()
 
@@ -21,21 +23,40 @@ const StepOtp = ({onPrev}) => {
         return () => clearInterval(timer);
       }, [counter]);
 
-    const handleSubmit=()=>{  
+    const handleSubmit=()=>{ 
+        console.log(otp.length) 
         let otpkey = parseInt(otp.join(""));  
         let item={otp:otpkey,hash,phone}
 
         dispatch(verifyotp(item)).then((res)=>{
             if(res.success){
                 navigate(-1)
+            }else{
+               displayErrorFunction(res.message)
             }
         })
     }
 
+    const displayErrorFunction=(message)=>{
+        setError(message)
+        setDisplayError(true)
+        setTimeout(()=>{
+            setDisplayError(false)
+            setError('')
+        },3000)
+    }
+
     const handleResend=()=>{
+        dispatch(sendotp(phone)).then((res)=>{
+          if(res.success){
+            setCounter(60);
+          }
+        })
     }
 
     const handleChange=(element,index)=>{
+        setError('')
+        setDisplayError(false)
         if (isNaN(element.target.value)) {
             return false
         } else if (element.target.value.length > 1 && element.target.nextSibling) {
@@ -97,6 +118,7 @@ const StepOtp = ({onPrev}) => {
             <input
                 type="text"
                 className={`${style.otp_input}`}
+                style={displayError?{ border:"0.1px solid red"}:{}}
                 maxLength="1"
                 key={index}
                 value={data}
@@ -105,21 +127,21 @@ const StepOtp = ({onPrev}) => {
             />
             );
         })}
+      
         </div>
+        {error && (
+        <span style={{ color: "red", fontSize: "12px",marginBottom:'-1rem' }}>
+            {error}
+        </span>
+        ) }
         <button
         text="VERIFY"
         onClick={handleSubmit}
         className={`${style.button} root_button`}
         >
-        Verify
+        {loading?"Loading...":"Verify"}
         </button>
-        {error ? (
-        <p style={{ color: "red", fontSize: "12px", marginTop: "10px" }}>
-            {error}
-        </p>
-        ) : (
-        ""
-        )}
+      
 
         <p className={`${style.resend}`}>
         {counter > 0

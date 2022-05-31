@@ -6,6 +6,7 @@ import {
     ADD_ADDRESS_REQUEST,
     ADD_ADDRESS_SUCCESS
 } from '../constants/addressConstant';
+import { LOGOUT_SUCCESS } from '../constants/userConstant';
 
 const initialState = {
     address: {},
@@ -20,7 +21,8 @@ export const addressReducer = (state = initialState, action) => {
         case ADD_ADDRESS_REQUEST:
             return {
                 ...state,
-                loading: true
+                loading: true,
+                error: null
             }
 
         case GET_ADDRESS_SUCCESS:
@@ -36,6 +38,14 @@ export const addressReducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 error: action.payload
+            }
+        case LOGOUT_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                error: null,
+                address: {},
+                message: null
             }
         default:
             return state

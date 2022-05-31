@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import Button from "../../../components/Button/Button";
 import Card from "../../../components/Card/Card";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import style from "./StepPhone.module.css";
 import { sendotp } from "../../../redux/actions/user";
 
 const StepPhone = ({onNext}) => {
+  const {loading}=useSelector((state)=>state.userReducer)
   const [phone, setPhone] = useState("");
   const dispatch=useDispatch();
 
@@ -55,7 +56,7 @@ const StepPhone = ({onNext}) => {
           />
         </>
       ) : (
-        <Button text="Submit" onClick={handleSubmit} />
+        <Button text="Submit" onClick={handleSubmit} loading={loading} />
       )}
     </Card>
   )

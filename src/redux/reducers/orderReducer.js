@@ -6,6 +6,8 @@ import {
     GET_ORDER_REQUEST,
     GET_ORDER_SUCCESS
 } from '../constants/orderConstant';
+import { LOGOUT_SUCCESS } from '../constants/userConstant';
+
 
 
 const initialState = {
@@ -52,6 +54,15 @@ export const orderReducer = (state = initialState, action) => {
                 loading: false,
                 error: action.payload
             }
+        case LOGOUT_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                error: null,
+                order: [],
+                message: null
+            }
+
 
         default:
             return state

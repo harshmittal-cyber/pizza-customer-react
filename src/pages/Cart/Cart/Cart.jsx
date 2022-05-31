@@ -88,17 +88,19 @@ const Cart = () => {
                       />
                     ))}
                   </div>
-                  <Link to={"/checkout"}>
                     <div className={`${styles.place_order_button} col-12-12`}>
                       <div className={`${styles.place_order}`}>
+                  <Link to={"/checkout"}>
+
                         <button
                           className={`${styles.order_button} root_button`}
                         >
                           <span>Place Order</span>
                         </button>
+                        </Link>
+
                       </div>
                     </div>
-                  </Link>
                 </div>
               </div>
 
