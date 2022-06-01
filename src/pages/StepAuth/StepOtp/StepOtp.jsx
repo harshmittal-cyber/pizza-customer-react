@@ -14,6 +14,7 @@ const StepOtp = ({onPrev}) => {
     const [counter, setCounter] = useState(60);
     const [displayError,setDisplayError]=useState(false);
     const [error, setError] = useState();
+    const [Loading,setLoading]=useState(false)
     const dispatch=useDispatch();
     const navigate=useNavigate()
 
@@ -27,11 +28,13 @@ const StepOtp = ({onPrev}) => {
         console.log(otp.length) 
         let otpkey = parseInt(otp.join(""));  
         let item={otp:otpkey,hash,phone}
-
+        setLoading(true)
         dispatch(verifyotp(item)).then((res)=>{
             if(res.success){
+                setLoading(false)
                 navigate(-1)
             }else{
+                setLoading(false)
                displayErrorFunction(res.message)
             }
         })
@@ -139,7 +142,7 @@ const StepOtp = ({onPrev}) => {
         onClick={handleSubmit}
         className={`${style.button} root_button`}
         >
-        {loading?"Loading...":"Verify"}
+        {Loading?"Loading...":"Verify"}
         </button>
       
 

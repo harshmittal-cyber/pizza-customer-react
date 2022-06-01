@@ -150,7 +150,7 @@ const Footer = () => {
                       src={`/images/telephone.png`}
                       alt="Hungry-telephone"
                     />
-                    <a href="tel:9053268000">9999999999</a>
+                    <a href="tel:9053268000">9053268000</a>
                   </p>
                   <p className={`${style.row}`}>
                     <LazyLoadImage
