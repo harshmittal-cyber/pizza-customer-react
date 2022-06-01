@@ -5,7 +5,8 @@ import { categoryReducer } from "./categoryReducer";
 import { userReducer } from "./userReducer";
 import { cartReducer } from "./cartReducer";
 import { addressReducer } from "./addressReducer";
-import { orderReducer } from './orderReducer'
+import { orderReducer } from './orderReducer';
+import { otpReducer } from './otpReducer'
 
 const persistConfig = {
     key: 'root',
@@ -18,7 +19,8 @@ const appReducer = combineReducers({
     userReducer,
     cartReducer,
     addressReducer,
-    orderReducer
+    orderReducer,
+    otpReducer
 })
 
 const rootReducer = (state, action) => {

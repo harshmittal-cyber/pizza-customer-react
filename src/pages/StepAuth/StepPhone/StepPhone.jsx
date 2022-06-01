@@ -6,7 +6,7 @@ import style from "./StepPhone.module.css";
 import { sendotp } from "../../../redux/actions/user";
 
 const StepPhone = ({onNext}) => {
-  const {loading}=useSelector((state)=>state.userReducer)
+  const {loading}=useSelector((state)=>state.otpReducer)
   const [phone, setPhone] = useState("");
   const [error,setError]=useState(null)
   const dispatch=useDispatch();

@@ -7,9 +7,9 @@ import style from "./StepOtp.module.css";
 import { useNavigate } from 'react-router-dom';
 
 const StepOtp = ({onPrev}) => {
-    const {loading}=useSelector((state)=>state.userReducer)
+    const {loading}=useSelector((state)=>state.otpReducer)
     const [otp, setotp] = useState(new Array(6).fill(""));
-    const {phone,hash}=useSelector((state)=>state.userReducer.otp);
+    const {phone,hash}=useSelector((state)=>state.otpReducer.otp);
     const [phoneno,setPhoneNo]=useState(phone);
     const [counter, setCounter] = useState(60);
     const [displayError,setDisplayError]=useState(false);
@@ -25,7 +25,6 @@ const StepOtp = ({onPrev}) => {
       }, [counter]);
 
     const handleSubmit=()=>{ 
-        console.log(otp.length) 
         let otpkey = parseInt(otp.join(""));  
         let item={otp:otpkey,hash,phone}
         setLoading(true)
