@@ -2,6 +2,7 @@ import React,{useState} from "react";
 import style from "./cartItem.module.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useSelector } from "react-redux";
+import {API} from '../../../Backend'
 
 const CartItem = (props) => {
   const {_id, itemName, price, qty, image, description } = props.cartitem;
@@ -32,7 +33,7 @@ const CartItem = (props) => {
         <div className={`${style.cartitem_left}`}>
           <div className={`${style.item_image}`}>
             <LazyLoadImage
-              src={`${process.env.REACT_APP_API_URL}${image}`}
+              src={`${API}${image}`}
               className={`${style.item_img}`}
               alt="item-image"
             />

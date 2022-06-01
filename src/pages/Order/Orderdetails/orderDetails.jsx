@@ -2,6 +2,7 @@ import React,{useState,useEffect} from 'react'
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { useLocation } from 'react-router-dom';
+import {API} from '../../../Backend'
 
 const OrderDetails = () => {
     const {order}=useSelector((state)=>state.orderReducer)
@@ -187,7 +188,7 @@ const OrderDetails = () => {
                             <div className="sm:flex lg:col-span-7">
                             <div className="flex-shrink-0 w-full aspect-w-1 aspect-h-1  rounded-lg overflow-hidden sm:aspect-none sm:w-72 sm:h-40">
                                 <img
-                                src={`${process.env.REACT_APP_API_URL}${product.productId.image}`}
+                                src={`${API}${product.productId.image}`}
                                 alt={'items'}
                                 className="w-full h-full object-center object-cover sm:w-full sm:h-full"
                                 />
