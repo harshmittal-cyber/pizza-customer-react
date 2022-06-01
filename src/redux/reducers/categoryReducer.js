@@ -16,7 +16,7 @@ export const categoryReducer = (state = initialState, action) => {
         case GET_CATEGORIES_REQUEST:
             return {
                 ...state,
-                laoding: true,
+                loading: true,
                 error: null,
                 message: null
             }
