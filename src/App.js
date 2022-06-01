@@ -32,10 +32,8 @@ function App() {
           <Route exact path='/login' element={<Auth />} />
           <Route exact path='/user/orders' element={<Order />} />
           <Route exact path='/cart' element={<Cart />} />
-          {/* <Route element={PrivateRoute}> */}
           <Route exact path='checkout' element={<Checkout />} />
           <Route exact path='/order_details' element={<OrderDetails />} />
-          {/* </Route> */}
         </Route>
 
         <Route path={'*'} element={<Page404 />} />
