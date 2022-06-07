@@ -41,9 +41,11 @@ const Orders = () => {
                             >
                               <div className={`${style.order_item_details}`}>
                                 <div className={`${style.order_hd}`}>
-                                  <div className={`${style.order_status}`}>
-                                    <div className={`${style.order_status_h}`}>
-                                      {order.orderStatus[3].isCompleted === true
+                                  <div className={`${style.order_status}`} style={order.orderStatus[4].isCompleted? {backgroundColor:'#fc283f'}:{}}>
+                                    <div className={`${style.order_status_h}`} >
+                                      {order.orderStatus[4].isCompleted===true
+                                      ? order.orderStatus[4].type:   
+                                      order.orderStatus[3].isCompleted === true
                                         ? order.orderStatus[3].type
                                         : order.orderStatus[2].isCompleted ===
                                           true

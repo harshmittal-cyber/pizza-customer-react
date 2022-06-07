@@ -21,6 +21,20 @@ const OrderDetails = () => {
         }
     },[])  
 
+    useEffect(()=>{
+       if(Object.keys(Order).length>0){
+        const b = Order.orderStatus[1].isCompleted === true;
+        const c = Order.orderStatus[2].isCompleted === true;
+        const d = Order.orderStatus[3].isCompleted === true;
+        if (d) setStep(3.5);
+        else if (c) setStep(2);
+        else if (b) setStep(1);
+        else setStep(0);
+       }
+    },[Order])
+
+
+
     function classNames(...classes) {
         return classes.filter(Boolean).join(" ");
       }
@@ -50,12 +64,6 @@ const OrderDetails = () => {
                         {moment(Order.createdAt).format("MMM Do,YYYY")}
                     </time>
                     </p>
-                    {/* <a
-                    href="https://www.facebook.com"
-                    className="text-sm font-medium text-indigo-600 hover:text-indigo-500 sm:hidden"
-                    >
-                    View invoice<span aria-hidden="true"> &rarr;</span>
-                    </a> */}
                 </div>
                 <div className="border-t border-gray-200  py-6 px-4 mt-4 sm:px-6  lg:p-8 ">
                     <h4 className="sr-only">Status</h4>
