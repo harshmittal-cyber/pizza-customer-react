@@ -1,7 +1,7 @@
 {
   "name": "pizza-customer-react",
   "version": "0.1.0",
-  "homepage": "https://hungrypizza.herokuapp.com",
+  "homepage": "/",
   "private": true,
   "dependencies": {
     "@emotion/styled": "^11.3.0",
