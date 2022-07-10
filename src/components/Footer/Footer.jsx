@@ -96,7 +96,6 @@ const Footer = () => {
                     src={`/images/facebook.png`}
                   />
                 </a>
-
                 <a
                   href="https://www.instagram.com/harsh.mittal17/"
                   target="_blank"
