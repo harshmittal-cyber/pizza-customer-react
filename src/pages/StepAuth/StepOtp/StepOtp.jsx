@@ -24,6 +24,26 @@ const StepOtp = ({onPrev}) => {
         return () => clearInterval(timer);
       }, [counter]);
 
+      useEffect(()=>{
+        if ("OTPCredential" in window) {
+            const ac = new AbortController();
+          
+            navigator.credentials
+              .get({
+                otp: { transport: ["sms"] },
+                signal: ac.signal
+              })
+              .then((otp) => {
+                const num=otp.code
+                setotp(num.toString().split('').map(Number))
+                ac.abort();
+              })
+              .catch((err) => {
+                ac.abort();
+              });
+          }
+      },[])
+
     const handleSubmit=()=>{ 
         let otpkey = parseInt(otp.join(""));  
         let item={otp:otpkey,hash,phone}

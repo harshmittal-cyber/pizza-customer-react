@@ -1,7 +1,7 @@
 {
     "name": "Hungry",
     "short_name": "HUNGRY",
-    "theme_color": "##b0a8b0",
+    "theme_color": "#b0a8b0",
     "background_color": "#fc283f",
     "display": "standalone",
     "scope": "/",
