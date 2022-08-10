@@ -163,7 +163,18 @@ export const removeCartItem = (payload) => async (dispatch) => {
                 dispatch(getCartItems())
             }
         } else {
+            const items = JSON.parse(localStorage.getItem('cart')) || null;
+            console.log(items);
+            const item = delete items[payload.productId];
 
+            if (item) {
+                localStorage.setItem('cart', JSON.stringify(items));
+                if (Object.keys(items).length > 0) {
+                    dispatch({ type: ADD_TO_CART_SUCCESS, payload: { cartItems: items } })
+                } else {
+                    dispatch({ type: ADD_TO_CART_SUCCESS, payload: { cartItems: {} } })
+                }
+            }
         }
     } catch (err) {
         dispatch({ type: REMOVE_CART_ITEM_FAIL, payload: err.response.data.message })
